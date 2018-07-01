@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crazy.dashboard.dao.CoinMarketCapMapper">
+
+    <sql id="tableName">coin_market_cap</sql>
+
+    <sql id="columns_no_id">
+        name, symbol, rank, price_usd, price_btc, 
+        volume_usd_24h, market_cap_usd, percent_change_24h, percent_change_7d, price_cny, 
+        volume_cny_24h, market_cap_cny,last_updated,status
+    </sql>
+
+    <sql id="columns">
+        id, <include refid="columns_no_id"/>
+    </sql>
+
+    <sql id="columns_join">
+        a.id, a.name, a.symbol, a.rank, a.price_usd, 
+        a.price_btc, a.volume_usd_24h, a.market_cap_usd, a.percent_change_24h, a.percent_change_7d, 
+        a.price_cny, a.volume_cny_24h, a.market_cap_cny,a.last_updated,status
+    </sql>
+
+    <sql id="likeWhere" databaseId="mysql">
+    </sql>
+
+    <sql id="dynamicWhere">
+        <where>
+            <if test="name not in {null, ''}">a.name = #{name}</if>
+            <if test="symbol not in {null, ''}">AND a.symbol = #{symbol}</if>
+            <if test="rank not in {null, ''}">AND a.rank = #{rank}</if>
+            <if test="priceUsd not in {null, ''}">AND a.price_usd = #{priceUsd}</if>
+            <if test="priceBtc not in {null, ''}">AND a.price_btc = #{priceBtc}</if>
+            <if test="volumeUsd24H not in {null, ''}">AND a.volume_usd_24h = #{volumeUsd24H}</if>
+            <if test="marketCapUsd not in {null, ''}">AND a.market_cap_usd = #{marketCapUsd}</if>
+            <if test="percentChange24H not in {null, ''}">AND a.percent_change_24h = #{percentChange24H}</if>
+            <if test="percentChange7D not in {null, ''}">AND a.percent_change_7d = #{percentChange7D}</if>
+            <if test="priceCny not in {null, ''}">AND a.price_cny = #{priceCny}</if>
+            <if test="volumeCny24H not in {null, ''}">AND a.volume_cny_24h = #{volumeCny24H}</if>
+            <if test="marketCapCny not in {null, ''}">AND a.market_cap_cny = #{marketCapCny}</if>
+            <if test="lastUpdated not in {null, ''}">AND a.last_updated = #{lastUpdated}</if>
+            <if test="status not in {null, ''}">AND a.status = #{status}</if>
+            <if test="idList not in {null,''}">
+                AND a.id IN
+                <foreach item="item" index="index" collection="idList"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <include refid="likeWhere"/>
+        </where>
+    </sql>
+
+    <select id="get" resultType="CoinMarketCap" parameterType="String">
+        SELECT <include refid="columns_join"/>
+        FROM <include refid="tableName"/> a
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="getByDynamicWhere" resultType="CoinMarketCap">
+        SELECT <include refid="columns_join"/>
+        FROM <include refid="tableName"/> a
+        <include refid="dynamicWhere"/>
+    </select>
+
+    <select id="getCount" resultType="int">
+        SELECT COUNT(1)
+        FROM <include refid="tableName"/> a
+        <include refid="dynamicWhere"/>
+    </select>
+
+    <select id="getIdList" resultType="String">
+        SELECT a.id
+        FROM <include refid="tableName"/> a
+        <include refid="dynamicWhere"/>
+    </select>
+
+    <select id="getList" resultType="CoinMarketCap">
+        SELECT <include refid="columns_join"/>
+        FROM <include refid="tableName"/> a
+        <include refid="dynamicWhere"/>
+        <if test="fullordering not in {null, ''}">
+            ORDER BY ${fullordering}
+        </if>
+    </select>
+
+    <select id="getListLeftJoinByUid" resultType="CoinMarketCap">
+        SELECT <include refid="columns_join"/>,b.id AS relationId
+        FROM <include refid="tableName"/> a
+        LEFT JOIN user_coin_relation b ON a.id = b.symbol
+        WHERE b.uid = #{uid}
+        ORDER BY b.priority DESC
+    </select>
+
+    <insert id="insert" parameterType="CoinMarketCap" useGeneratedKeys="true"
+            keyProperty="id" >
+        INSERT IGNORE INTO <include refid="tableName"/>
+        (<include refid="columns"/>)
+        VALUES
+        (
+        #{id},#{name}, #{symbol}, #{rank}, #{priceUsd}, #{priceBtc},
+        #{volumeUsd24H}, #{marketCapUsd}, #{percentChange24H}, #{percentChange7D}, #{priceCny}, 
+        #{volumeCny24H}, #{marketCapCny},#{lastUpdated}, #{status}
+        )
+    </insert>
+
+    <update id="update" parameterType="CoinMarketCap">
+        UPDATE <include refid="tableName"/>
+        <set>
+            <if test="name not in {null, ''}">name=#{name}, </if>
+            <if test="symbol not in {null, ''}">symbol=#{symbol}, </if>
+            <if test="rank not in {null, ''}">rank=#{rank}, </if>
+            <if test="priceUsd not in {null, ''}">price_usd=#{priceUsd}, </if>
+            <if test="priceBtc not in {null, ''}">price_btc=#{priceBtc}, </if>
+            <if test="volumeUsd24H not in {null, ''}">volume_usd_24h=#{volumeUsd24H}, </if>
+            <if test="marketCapUsd not in {null, ''}">market_cap_usd=#{marketCapUsd}, </if>
+            <if test="percentChange24H not in {null, ''}">percent_change_24h=#{percentChange24H}, </if>
+            <if test="percentChange7D not in {null, ''}">percent_change_7d=#{percentChange7D}, </if>
+            <if test="priceCny not in {null, ''}">price_cny=#{priceCny}, </if>
+            <if test="volumeCny24H not in {null, ''}">volume_cny_24h=#{volumeCny24H}, </if>
+            <if test="marketCapCny not in {null, ''}">market_cap_cny=#{marketCapCny},</if>
+            <if test="lastUpdated not in {null, ''}">last_updated=#{lastUpdated}, </if>
+            <if test="status not in {null, ''}">status=#{status}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="String">
+        DELETE FROM <include refid="tableName"/> WHERE id = #{id}
+    </delete>
+
+    <delete id="batchDelete">
+        DELETE FROM <include refid="tableName"/>
+        WHERE id IN
+        <foreach item="item" index="index" collection="list"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

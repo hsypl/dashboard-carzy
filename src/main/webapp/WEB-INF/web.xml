@@ -12,8 +12,8 @@
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>
-      <!--classpath:conf/service.xml-->
-      <!--classpath:conf/resources.xml-->
+      classpath:conf/service.xml
+      classpath:conf/resources.xml
       <!--classpath:conf/security.xml-->
       <!--classpath:conf/scheduling.xml-->
     </param-value>
