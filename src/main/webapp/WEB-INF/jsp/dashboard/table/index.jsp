@@ -10,8 +10,13 @@
     <%@include file="/WEB-INF/jsp/includes/linksOfHead.jsp" %>
     <link href="<s:url value="/media/vendors/datatables/datatables.min.css"/>" rel="stylesheet">
 
-    <link href="<s:url value="/media/vendors/dateTimePicker/bootstrap-theme.css"/>" rel="stylesheet">
+    <link href="<s:url value="/media/vendors/dateTimePicker/bootstrap-datetimepicker.min.css"/>" rel="stylesheet">
     <%--<link href="/media/vendors/css/iCheck/skins/flat/green.css" rel="stylesheet">--%>
+    <style>
+        .toolbar {
+            float: left;
+        }
+    </style>
 </head>
 
 <body class="nav-md">
@@ -47,15 +52,26 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-
-                        <div class="form-group">
-
-                            <div class="input-group date form_date col-md-2" id="datetimepicker" data-date="" data-date-format="yyyy-mm-dd">
-                                <input class="form-control" size="8" type="text"  placeholder="选择时间">
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        <div class="toolbar">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <div class="input-group date form_date col-md-4" id="datetimepicker" data-date="" data-date-format="yyyy-mm-dd">
+                                        <input class="form-control" size="8" type="text" id="selectTime" placeholder="选择时间">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <%--<div class="form-group">--%>
+
+                            <%--<div class="input-group date form_date col-md-2" id="datetimepicker" data-date="" data-date-format="yyyy-mm-dd">--%>
+                                <%--<input class="form-control" size="8" type="text"  placeholder="选择时间">--%>
+                                <%--<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>--%>
+                                <%--<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
                         <table id="example" class="table table-striped table-bordered bulk_action" >
                             <thead>
                             <tr>
@@ -64,17 +80,9 @@
                                 <th>symbol</th>
                                 <th>rank</th>
                                 <th>priceUsd</th>
+                                <th>操作</th>
                             </tr>
                             </thead>
-                            <tfoot>
-                            <tr>
-                                <th>id</th>
-                                <th>name</th>
-                                <th>symbol</th>
-                                <th>rank</th>
-                                <th>priceUsd</th>
-                            </tr>
-                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -93,26 +101,17 @@
 <script src="<s:url value="/media/vendors/datatables/datatables.min.js"/>" type="text/javascript"></script>
 <script src="<s:url value="/media/vendors/datatables/china.js"/>" type="text/javascript"></script>
 
+<script src="<s:url value="/media/vendors/dateTimePicker/moment.min.js"/>" type="text/javascript"></script>
+<script src="<s:url value="/media/vendors/dateTimePicker/moment.js"/>" type="text/javascript"></script>
 <script src="<s:url value="/media/vendors/dateTimePicker/bootstrap-datetimepicker.min.js"/>" type="text/javascript"></script>
-<script src="<s:url value="/media/vendors/dateTimePicker/bootstrap-datetimepicker.zh-CN.js"/>" type="text/javascript" charset="UTF-8"></script>
-
 
 <%--<script src="/media/vendors/jquery/icheck.min.js"></script>--%>
 <script>
-
     $('#datetimepicker').datetimepicker({
-        language:  'zh-CN',
-        weekStart: 1,
-        todayBtn:  1,
-        autoclose: 1,
-        todayHighlight: 1,
-        startView: 2,
-        minView: 2,
-        forceParse: 0
-    }).on('changeDate', function(ev){
-        alert("heiheihei")
-    });;
-
+        format: 'YYYY-MM-DD'
+    }).on("dp.change", function () {
+        console.log("123")
+    });
 
     $(document).ready(function() {
         $('#example').DataTable( {
@@ -128,9 +127,30 @@
                 { "data": "name" },
                 { "data": "symbol" },
                 { "data": "rank" },
-                { "data": "priceUsd", orderable : false}
+                { "data": "priceUsd", orderable : false},
+                {
+                    data: null,
+                    orderable : false,
+                    width : "120px"
+                }
+            ],
+            columnDefs:[{
+                targets: 5,
+                render: function (data, type, row, meta) {
+                    var id = '"' + row.id + '"';
+                    return "<a class='btn btn-default' onclick=edit("+ id + ");><i class='fa fa-pencil-square-o fa-lg'></i></a>"+
+                    "<a class='btn btn-default' onclick=edit("+ id + ");><i class='fa fa-trash fa-lg'></i></a>" ;
+                }},
+//                {
+//                    render: function(data, type, row) {
+//                        return data + ' (' + row['priceUsd'] + ')';
+//                    },
+//                    targets: 0
+//                },
+                { "orderable": false, "targets": 5 }
             ]
         } );
+
     } );
 
     function ajaxTable(data, callback, settings) {
@@ -173,6 +193,10 @@
                 }
             }
         });
+    }
+
+    function edit(id) {
+        alert(id);
     }
 </script>
 </html>

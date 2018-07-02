@@ -29,7 +29,7 @@ public class TableController {
 
     @RequestMapping(value = "/list",method = RequestMethod.POST)
     @ResponseBody
-    public DataTables list(@RequestBody String data){
+    public DataTables<List<CoinMarketCap>> list(@RequestBody String data){
         Type type = new TypeToken<DataTables<List<CoinMarketCap>>>() {
         }.getType();
         DataTables<List<CoinMarketCap>> dataTables = GsonUtils.fromJson(data,type);
