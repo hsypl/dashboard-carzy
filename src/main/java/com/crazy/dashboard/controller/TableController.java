@@ -5,6 +5,7 @@ import com.crazy.dashboard.model.CoinMarketCap;
 import com.crazy.dashboard.service.CoinMarketCapService;
 import com.google.gson.reflect.TypeToken;
 import com.sungness.core.util.GsonUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,11 @@ public class TableController {
 
     @RequestMapping("/index")
     public void index(){
+
+    }
+
+    @RequestMapping("/edit")
+    public void edit(){
 
     }
 

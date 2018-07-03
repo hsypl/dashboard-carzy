@@ -1,7 +1,7 @@
 /**
  * Created by root on 2018/7/1.
  */
-var chineseLangue = {
+var language = {
     "sProcessing": "处理中...",
         "sLengthMenu": "显示 _MENU_ 项结果",
         "sZeroRecords": "没有匹配结果",

@@ -12,11 +12,11 @@
 
     <link href="<s:url value="/media/vendors/dateTimePicker/bootstrap-datetimepicker.min.css"/>" rel="stylesheet">
     <%--<link href="/media/vendors/css/iCheck/skins/flat/green.css" rel="stylesheet">--%>
-    <style>
-        .toolbar {
-            float: left;
-        }
-    </style>
+    <%--<style>--%>
+    <%--.toolbar {--%>
+    <%--float: left;--%>
+    <%--}--%>
+    <%--</style>--%>
 </head>
 
 <body class="nav-md">
@@ -30,69 +30,65 @@
 
         <!-- page content -->
         <div class="right_col" role="main">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                    <div class="x_title">
-                        <h2>Plus Table Design</h2>
-                        <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                   aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">Settings 1</a>
-                                    </li>
-                                    <li><a href="#">Settings 2</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li><a class="close-link"><i class="fa fa-close"></i></a>
-                            </li>
-                        </ul>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
-                        <div class="toolbar">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <div class="input-group date form_date col-md-4" id="datetimepicker"
-                                             data-date="" data-date-format="yyyy-mm-dd">
-                                            <input class="form-control" size="8" type="text" id="selectTime"
-                                                   placeholder="选择时间">
-                                            <span class="input-group-addon"><span
-                                                    class="glyphicon glyphicon-calendar"></span></span>
+            <div class="">
+                <div class="clearfix"></div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Plain Page</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <div class="toolbar">
+                                    <div class="btn-group" style="margin-top: 10px;margin-bottom: 20px">
+                                        <a href="${editUrl}" class="btn btn-success" type="button">新增</a>
+                                        <a href="${editUrl}" class="btn btn-success" type="button">编辑</a>
+                                        <button type="button" class="btn btn-default">删除</button>
+                                    </div>
+                                </div>
+                                <div class="searchTool">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <div class="input-group" id="datetimepicker" data-date=""
+                                                     data-date-format="yyyy-mm-dd">
+                                                    <input class="form-control" size="8" type="text" id="selectTime"
+                                                           placeholder="选择时间">
+                                                    <span class="input-group-addon"><span
+                                                            class="glyphicon glyphicon-calendar"></span></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <select class="form-control">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
+                                <table id="example" class="table table-striped table-bordered bulk_action">
+                                    <thead>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>name</th>
+                                        <th>username</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                </table>
                             </div>
                         </div>
-                        <%--<div class="form-group">--%>
-
-                        <%--<div class="input-group date form_date col-md-2" id="datetimepicker" data-date="" data-date-format="yyyy-mm-dd">--%>
-                        <%--<input class="form-control" size="8" type="text"  placeholder="选择时间">--%>
-                        <%--<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>--%>
-                        <%--<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>--%>
-                        <%--</div>--%>
-                        <%--</div>--%>
-                        <table id="example" class="table table-striped table-bordered bulk_action">
-                            <thead>
-                            <tr>
-                                <th>id</th>
-                                <th>name</th>
-                                <th>symbol</th>
-                                <th>rank</th>
-                                <th>priceUsd</th>
-                                <th>时间</th>
-                                <th>操作</th>
-                            </tr>
-                            </thead>
-                        </table>
                     </div>
                 </div>
             </div>
         </div>
+
+
         <!-- /page content -->
 
         <!-- footer content -->
@@ -113,41 +109,26 @@
 
 <%--<script src="/media/vendors/jquery/icheck.min.js"></script>--%>
 <script>
-    var table;
     $('#datetimepicker').datetimepicker({
         format: 'YYYY-MM-DD'
     }).on("dp.change", function () {
-        var time = $('#selectTime').val();
-        table
-                .columns(5)
-                .search(time)
-                .draw();
+        console.log("123")
     });
 
     $(document).ready(function () {
-        table = $('#example').DataTable({
+        $('#example').DataTable({
             stateSave: true,
             searchDelay: 1000,
             processing: true,
             serverSide: true,
             language: language,
-            //设置时间
-            "stateSaveParams": function (settings, data) {
-                var time = data.columns[5].search.search;
-                if(time != 'NaN'){
-                    $('#selectTime').val(time);
-                }
-            },
             ajax: function (data, callback, settings) {
                 ajaxTable(data, callback, settings);
             },
             columns: [
-                {"data": "id"},
+                {"data": "uid"},
                 {"data": "name"},
-                {"data": "symbol"},
-                {"data": "rank"},
-                {"data": "priceUsd", orderable: false},
-                {"data": "lastUpdated", orderable: false},
+                {"data": "username"},
                 {
                     data: null,
                     orderable: false,
@@ -155,20 +136,21 @@
                 }
             ],
             columnDefs: [{
-                targets: 6,
+                targets: 3,
                 render: function (data, type, row, meta) {
-                    var id = '"' + row.id + '"';
-                    return "<a class='btn btn-default' onclick=edit(" + id + ");><i class='fa fa-pencil-square-o fa-lg'></i></a>" +
-                            "<a class='btn btn-default' onclick=edit(" + id + ");><i class='fa fa-trash fa-lg'></i></a>";
+                    var uid =  row.uid ;
+                    var editUrl = "/dashboard/user/edit?uid="+uid;
+                    return "<a class='btn btn-default' href = " +editUrl +" ><i class='fa fa-pencil-square-o fa-lg'></i></a>";
+//                    return "<a class='btn btn-default' onclick=edit(" + uid + ");><i class='fa fa-pencil-square-o fa-lg'></i></a>" +
+//                            "<a class='btn btn-default' onclick=edit(" + id + ");><i class='fa fa-trash fa-lg'></i></a>";
                 }
-            },
+            }
 //                {
 //                    render: function(data, type, row) {
 //                        return data + ' (' + row['priceUsd'] + ')';
 //                    },
 //                    targets: 0
 //                },
-                {"orderable": false, "targets": 6}
             ]
         });
 
@@ -176,15 +158,10 @@
 
     function ajaxTable(data, callback, settings) {
         //封装请求参数
-        var param = {};
-        var filter = {};
-        data['columns'].forEach(function (val) {
-            if (val['search'].value != ''){
-                eval('filter.'+val.data+'='+val.search.value+';');
-            }
-        });
         console.log(data);
+        var param = {};
         var pagination = {};
+        var filter = {};
         var columnIndex = data['order'][0]['column'];  // 获取排序列的索引
         var columnName = data['columns'][columnIndex]['data'];
         var dir = data['order'][0]['dir'];
@@ -198,7 +175,7 @@
         console.log(param);
         $.ajax({
             type: "POST",
-            url: "/dashboard/table/list",
+            url: "/dashboard/user/list",
             contentType: "application/json",
             cache: false,  //禁用缓存
             data: JSON.stringify(param),  //传入组装的参数

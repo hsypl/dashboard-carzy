@@ -32,6 +32,7 @@
                             <li><a href="index3.html">Dashboard3</a></li>
                         </ul>
                     </li>
+                    <li><a href="/dashboard/user/index"><i class="fa fa-user-md"></i>User </a>
                     <li><a><i class="fa fa-table"></i> Tables <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li><a href="/dashboard/table/index">Tables</a></li>

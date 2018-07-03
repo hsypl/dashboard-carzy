@@ -37,7 +37,7 @@
             <if test="priceCny not in {null, ''}">AND a.price_cny = #{priceCny}</if>
             <if test="volumeCny24H not in {null, ''}">AND a.volume_cny_24h = #{volumeCny24H}</if>
             <if test="marketCapCny not in {null, ''}">AND a.market_cap_cny = #{marketCapCny}</if>
-            <if test="lastUpdated not in {null, ''}">AND a.last_updated = #{lastUpdated}</if>
+            <if test="lastUpdated not in {null, ''}">AND a.last_updated > #{lastUpdated}</if>
             <if test="status not in {null, ''}">AND a.status = #{status}</if>
             <if test="idList not in {null,''}">
                 AND a.id IN

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crazy.dashboard.dao.UserInfoMapper">
+
+    <sql id="tableName">user_info</sql>
+
+    <sql id="columns_no_id">
+        uid, 
+        username, password, name,admin
+    </sql>
+
+    <sql id="columns">
+        uid, <include refid="columns_no_id"/>
+    </sql>
+
+    <sql id="columns_join">
+        a.uid, a.username, a.password, a.name,a.admin
+    </sql>
+
+    <sql id="likeWhere" databaseId="mysql">
+    </sql>
+
+    <sql id="dynamicWhere">
+        <where>
+            <if test="uid not in {null, ''}">a.uid = #{uid}</if>
+            <if test="username not in {null, ''}">AND a.username = #{username}</if>
+            <if test="password not in {null, ''}">AND a.password = #{password}</if>
+            <if test="name not in {null, ''}">AND a.name = #{name}</if>
+            <if test="admin not in {null, ''}">AND a.admin = #{admin}</if>
+            <include refid="likeWhere"/>
+        </where>
+    </sql>
+
+    <select id="get" resultType="UserInfo" parameterType="String">
+        SELECT <include refid="columns_join"/>
+        FROM <include refid="tableName"/> a
+        WHERE a.uid = #{uid}
+    </select>
+
+    <select id="getByDynamicWhere" resultType="UserInfo">
+        SELECT <include refid="columns_join"/>
+        FROM <include refid="tableName"/> a
+        <include refid="dynamicWhere"/>
+    </select>
+
+    <select id="getCount" resultType="int">
+        SELECT COUNT(1)
+        FROM <include refid="tableName"/> a
+        <include refid="dynamicWhere"/>
+    </select>
+
+    <select id="getList" resultType="UserInfo">
+        SELECT <include refid="columns_join"/>
+        FROM <include refid="tableName"/> a
+        <include refid="dynamicWhere"/>
+        <if test="fullordering not in {null, ''}">
+            ORDER BY ${fullordering}
+        </if>
+    </select>
+
+    <insert id="insert" parameterType="UserInfo" useGeneratedKeys="true"
+            keyProperty="uid" >
+        INSERT IGNORE INTO <include refid="tableName"/>
+        (<include refid="columns_no_id"/>)
+        VALUES
+        (
+        #{uid}, 
+        #{username}, #{password}, #{name}, #{admin}
+        )
+    </insert>
+
+    <update id="update" parameterType="UserInfo">
+        UPDATE <include refid="tableName"/>
+        <set>
+            <if test="uid not in {null, ''}">uid=#{uid}, </if>
+            <if test="username not in {null, ''}">username=#{username}, </if>
+            <if test="password not in {null, ''}">password=#{password}, </if>
+            <if test="name not in {null, ''}">name=#{name},</if>
+            <if test="admin not in {null, ''}">admin=#{admin}</if>
+        </set>
+        WHERE uid = #{uid}
+    </update>
+
+    <delete id="delete" parameterType="String">
+        DELETE FROM <include refid="tableName"/> WHERE uid = #{uid}
+    </delete>
+
+    <delete id="batchDelete">
+        DELETE FROM <include refid="tableName"/>
+        WHERE id IN
+        <foreach item="item" index="index" collection="list"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

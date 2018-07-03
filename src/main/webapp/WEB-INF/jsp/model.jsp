@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@ page isELIgnored="false" %>
-<html lang="en">
+<html>
 <head>
     <%@include file="/WEB-INF/jsp/includes/meta.jsp" %>
     <title>Gentelella Alela! | </title>
