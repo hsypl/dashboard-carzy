@@ -26,6 +26,9 @@
     <!-- enable transaction demarcation with annotations -->
     <tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManager"/>
 
+    <bean id="moduleTree"
+          class="com.crazy.dashboard.model.system.ModuleTree" />
+
     <!-- 定义事务管理规则 -->
     <tx:advice id="platformTxAdvice" transaction-manager="transactionManager">
         <tx:attributes>

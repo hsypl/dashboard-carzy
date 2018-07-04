@@ -140,7 +140,9 @@
                 render: function (data, type, row, meta) {
                     var uid =  row.uid ;
                     var editUrl = "/dashboard/user/edit?uid="+uid;
-                    return "<a class='btn btn-default' href = " +editUrl +" ><i class='fa fa-pencil-square-o fa-lg'></i></a>";
+                    var deleteUrl = "/dashboard/user/delete?uid="+uid;
+                    return "<a class='btn btn-default' href = " +editUrl +" ><i class='fa fa-pencil-square-o fa-lg'></i></a>"+
+                    "<a class='btn btn-default' href = " +deleteUrl +" ><i class='fa fa-trash fa-lg'></i></a>";
 //                    return "<a class='btn btn-default' onclick=edit(" + uid + ");><i class='fa fa-pencil-square-o fa-lg'></i></a>" +
 //                            "<a class='btn btn-default' onclick=edit(" + id + ");><i class='fa fa-trash fa-lg'></i></a>";
                 }

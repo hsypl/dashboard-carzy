@@ -7,11 +7,15 @@ import com.crazy.dashboard.dao.UserInfoMapper;
 import com.crazy.dashboard.model.UserInfo;
 import com.sungness.core.util.UuidGenerator;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.ognl.IntHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
 * 用户信息 业务处理类
@@ -47,6 +51,12 @@ public class UserInfoService
             userInfo = new UserInfo();
         }
         return userInfo;
+    }
+
+    public UserInfo getByUsername(String username){
+        Map<String,Object> params = new HashMap<>();
+        params.put("username",username);
+        return getByDynamicWhere(params);
     }
 
 

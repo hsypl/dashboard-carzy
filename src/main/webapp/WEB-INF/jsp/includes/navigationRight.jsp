@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <div class="col-md-3 left_col">
     <div class="left_col scroll-view">
         <div class="navbar nav_title" style="border: 0;">
@@ -25,20 +27,33 @@
             <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                    <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="/dashboard/index">Dashboard</a></li>
-                            <li><a href="index2.html">Dashboard2</a></li>
-                            <li><a href="index3.html">Dashboard3</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="/dashboard/user/index"><i class="fa fa-user-md"></i>User </a>
-                    <li><a><i class="fa fa-table"></i> Tables <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="/dashboard/table/index">Tables</a></li>
-                            <li><a href="tables_dynamic.html">Table Dynamic</a></li>
-                        </ul>
-                    </li>
+                    <c:forEach items="${moduleTree.rootMenuList}" varStatus="menuStatus">
+                        <c:set var="menuInfo" value="${menuStatus.current}"/>
+                        <li><a><i class="${menuInfo.icon}"></i> ${menuInfo.value} <span
+                                class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                <c:forEach items="${menuInfo.moduleList}" varStatus="moduleList">
+                                    <c:set var="module" value="${moduleList.current}"/>
+                                    <li><a href="${module.inletUri}">
+                                        <i class="${module.icon}"></i> ${module.value}</a></li>
+                                </c:forEach>
+                            </ul>
+                        </li>
+                    </c:forEach>
+                    <%--<li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>--%>
+                        <%--<ul class="nav child_menu">--%>
+                            <%--<li><a href="/dashboard/index">Dashboard</a></li>--%>
+                            <%--<li><a href="index2.html">Dashboard2</a></li>--%>
+                            <%--<li><a href="index3.html">Dashboard3</a></li>--%>
+                        <%--</ul>--%>
+                    <%--</li>--%>
+                    <%--<li><a href="/dashboard/user/index"><i class="fa fa-user-md"></i>User </a>--%>
+                    <%--<li><a><i class="fa fa-table"></i> Tables <span class="fa fa-chevron-down"></span></a>--%>
+                        <%--<ul class="nav child_menu">--%>
+                            <%--<li><a href="/dashboard/table/index">Tables</a></li>--%>
+                            <%--<li><a href="tables_dynamic.html">Table Dynamic</a></li>--%>
+                        <%--</ul>--%>
+                    <%--</li>--%>
                 </ul>
             </div>
             <div class="menu_section">

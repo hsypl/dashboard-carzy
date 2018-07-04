@@ -1,5 +1,7 @@
 package com.crazy.dashboard.controller.user;
 
+import com.crazy.code.annotation.Command;
+import com.crazy.code.annotation.Module;
 import com.crazy.code.service.ServiceProcessException;
 import com.crazy.code.web.DataTables;
 import com.crazy.dashboard.model.CoinMarketCap;
@@ -26,19 +28,24 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(UserController.URL_PREFIX)
+@Module(value = UserController.MODULE_NAME, order = 1, icon="fa fa-user-md")
 public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
     public static final String URL_PREFIX = "/dashboard/user";
 
+    public static final String MODULE_NAME = "用户信息";
+
     @Autowired
     private UserInfoService userInfoService;
 
+    @Command(value = MODULE_NAME + "首页", isInlet = true, order = 1)
     @RequestMapping("/index")
     public void index(){
 
     }
 
+    @Command(value = "列表" + MODULE_NAME, order = 2)
     @RequestMapping(value = "/list",method = RequestMethod.POST)
     @ResponseBody
     public DataTables<List<UserInfo>> list(@RequestBody String data){
@@ -52,11 +59,20 @@ public class UserController {
         return dataTables;
     }
 
+    @Command(value = "编辑" + MODULE_NAME, order = 3)
     @RequestMapping("/edit")
     public void edit(Model model,@RequestParam(required = false) String uid){
         model.addAttribute("userInfo",userInfoService.getSafety(uid));
     }
 
+    @Command(value = "删除" + MODULE_NAME, order = 4)
+    @RequestMapping("/delete")
+    public String edit(@RequestParam(required = true) String uid) throws ServiceProcessException {
+        userInfoService.delete(uid);
+        return "/dashboard/user/index";
+    }
+
+    @Command(value = "保存" + MODULE_NAME, order = 5)
     @RequestMapping("/save")
     public String save(UserInfo userInfo) throws ServiceProcessException {
         if(StringUtils.isBlank(userInfo.getUid())){

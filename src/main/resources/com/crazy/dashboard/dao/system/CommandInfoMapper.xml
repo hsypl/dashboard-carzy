@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crazy.dashboard.dao.system.CommandInfoMapper">
+
+    <sql id="tableName">command_info</sql>
+
+    <sql id="columns_no_id">
+        parent_id, code, value, order_number, pkg_name, path, enable, inlet,
+        discard
+    </sql>
+
+    <sql id="columns">
+        id, <include refid="columns_no_id"/>
+    </sql>
+
+    <sql id="likeWhere" databaseId="mysql">
+        <if test="value not in {null, ''}">AND value LIKE CONCAT('%', #{value}, '%')</if>
+        <if test="pkgName not in {null, ''}">AND pkg_name LIKE CONCAT(#{pkgName}, '%')</if>
+    </sql>
+
+    <sql id="dynamicWhere">
+        <where>
+            <if test="parentId != null">parent_id = #{parentId}</if>
+            <if test="enable != null">AND enable = #{enable}</if>
+            <if test="discard != null">AND discard = #{discard}</if>
+            <if test="path != null">AND path = #{path}</if>
+            <include refid="likeWhere"/>
+        </where>
+    </sql>
+
+    <select id="get" resultType="CommandInfo" parameterType="long">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tableName"/>
+        WHERE id = #{id}
+    </select>
+
+    <select id="getByDynamicWhere" resultType="CommandInfo">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tableName"/>
+        <include refid="dynamicWhere"/>
+    </select>
+
+    <select id="getByPath" resultType="CommandInfo" parameterType="String">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tableName"/>
+        WHERE path = #{path}
+    </select>
+
+    <select id="getCount" resultType="int">
+        SELECT COUNT(1)
+        FROM <include refid="tableName"/>
+        <include refid="dynamicWhere"/>
+    </select>
+
+    <select id="getList" resultType="CommandInfo">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tableName"/>
+        <include refid="dynamicWhere"/>
+        <if test="orderField != null">
+            ORDER BY ${orderField} <if test="orderSeq != null">${orderSeq}</if>
+        </if>
+    </select>
+
+    <insert id="insert" parameterType="CommandInfo" useGeneratedKeys="true"
+            keyProperty="id" >
+        INSERT IGNORE INTO <include refid="tableName"/>
+        (<include refid="columns_no_id"/>)
+        VALUES
+        (#{parentId}, #{code}, #{value}, #{orderNumber}, #{pkgName}, #{path},
+        #{enable}, #{inlet}, #{discard})
+    </insert>
+
+    <update id="update" parameterType="CommandInfo">
+        UPDATE <include refid="tableName"/>
+        <set>
+            <if test="parentId != null">parent_id=#{parentId},</if>
+            <if test="code not in {null, ''}">code=#{code},</if>
+            <if test="orderNumber != null">order_number=#{orderNumber},</if>
+            <if test="pkgName not in {null, ''}">pkg_name=#{pkgName},</if>
+            <if test="path not in {null, ''}">path=#{path},</if>
+            <if test="enable != null">enable=#{enable},</if>
+            <if test="inlet != null">inlet=#{inlet},</if>
+            <if test="discard != null">discard=#{discard}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateDiscard" parameterType="CommandInfo">
+        UPDATE <include refid="tableName"/>
+        SET discard = #{discard}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        DELETE FROM <include refid="tableName"/> WHERE id = #{id}
+    </delete>
+
+    <delete id="batchDelete">
+        DELETE FROM <include refid="tableName"/>
+        WHERE id IN
+        <foreach item="item" index="index" collection="list"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

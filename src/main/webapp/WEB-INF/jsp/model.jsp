@@ -8,6 +8,7 @@
     <title>Gentelella Alela! | </title>
     <!-- Bootstrap -->
     <%@include file="/WEB-INF/jsp/includes/linksOfHead.jsp" %>
+
 </head>
 
 <body class="nav-md">
