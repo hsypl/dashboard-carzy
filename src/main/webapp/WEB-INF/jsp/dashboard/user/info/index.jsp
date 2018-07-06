@@ -139,8 +139,8 @@
                 targets: 3,
                 render: function (data, type, row, meta) {
                     var uid =  row.uid ;
-                    var editUrl = "/dashboard/user/edit?uid="+uid;
-                    var deleteUrl = "/dashboard/user/delete?uid="+uid;
+                    var editUrl = "/dashboard/user/info/edit?uid="+uid;
+                    var deleteUrl = "/dashboard/user/info/delete?uid="+uid;
                     return "<a class='btn btn-default' href = " +editUrl +" ><i class='fa fa-pencil-square-o fa-lg'></i></a>"+
                     "<a class='btn btn-default' href = " +deleteUrl +" ><i class='fa fa-trash fa-lg'></i></a>";
 //                    return "<a class='btn btn-default' onclick=edit(" + uid + ");><i class='fa fa-pencil-square-o fa-lg'></i></a>" +
@@ -177,7 +177,7 @@
         console.log(param);
         $.ajax({
             type: "POST",
-            url: "/dashboard/user/list",
+            url: "/dashboard/user/info/list",
             contentType: "application/json",
             cache: false,  //禁用缓存
             data: JSON.stringify(param),  //传入组装的参数

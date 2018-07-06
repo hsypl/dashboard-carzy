@@ -32,7 +32,7 @@ import java.util.List;
 public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
-    public static final String URL_PREFIX = "/dashboard/user";
+    public static final String URL_PREFIX = "/dashboard/user/info";
 
     public static final String MODULE_NAME = "用户信息";
 

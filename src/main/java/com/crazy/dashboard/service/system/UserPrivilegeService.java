@@ -1,8 +1,10 @@
 package com.crazy.dashboard.service.system;
 
+import com.crazy.code.annotation.Menu;
 import com.crazy.code.dao.GenericMapper;
+import com.crazy.code.web.JstreeItem;
 import com.crazy.dashboard.dao.system.UserPrivilegeMapper;
-import com.crazy.dashboard.model.system.UserPrivilege;
+import com.crazy.dashboard.model.system.*;
 import com.crazy.code.service.LongPKBaseService;
 import com.crazy.code.service.ServiceProcessException;
 import org.slf4j.Logger;
@@ -10,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +39,9 @@ public class UserPrivilegeService
 
     @Autowired
     private CommandInfoService commandInfoService;
+
+    @Autowired
+    private ModuleTree moduleTree;
 
 
     /**
@@ -177,6 +183,50 @@ public class UserPrivilegeService
         UserPrivilege userPrivilege = getByUserAndItemIdAndType(userId,itemId,type);
         delete(userPrivilege.getId());
     }
+
+    public JstreeItem getUserPrivilege(){
+        Map<String,Boolean> state = new HashMap<>();
+        state.put("opened",true);
+        JstreeItem jstreeItem = new JstreeItem();
+        jstreeItem.setState(state);
+        jstreeItem.setId("0");
+        jstreeItem.setText("所有权限");
+        setMenu(jstreeItem);
+        return jstreeItem;
+    }
+
+    public void setMenu(JstreeItem rootItem){
+        for (MenuInfo menuInfo : moduleTree.getRootMenuList()) {
+            JstreeItem menuItem = new JstreeItem();
+            menuItem.setId(menuInfo.getMenuKey());
+            menuItem.setText(menuInfo.getValue());
+            setModule(menuInfo,menuItem);
+            rootItem.setChildren(menuItem);
+        }
+
+    }
+
+    public void setModule(MenuInfo menuInfo,JstreeItem menuItem){
+        for (ModuleInfo moduleInfo :menuInfo.getModuleList()) {
+            JstreeItem moduleItem = new JstreeItem();
+            moduleItem.setId(moduleInfo.getModuleKey());
+            moduleItem.setText(moduleInfo.getValue());
+            setCommand(moduleInfo,moduleItem);
+            menuItem.setChildren(moduleItem);
+        }
+    }
+
+    public void setCommand(ModuleInfo moduleInfo,JstreeItem moduleItem){
+        for (CommandInfo commandInfo : moduleInfo.getCommandList()){
+            JstreeItem commandItem = new JstreeItem();
+            commandItem.setId(commandInfo.getCommandKey());
+            commandItem.setText(commandInfo.getValue());
+
+            moduleItem.setChildren(commandItem);
+        }
+    }
+
+
 
 
 }

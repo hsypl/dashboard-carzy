@@ -37,7 +37,7 @@ public class AuthenticationSuccessHandler
         DashboardUserDetail clientUserDetails =
                 (DashboardUserDetail) authentication.getPrincipal();
         UserInfo userInfo = clientUserDetails.getUserInfo();
-        String targetUrl = "/dashboard/user/index";
+        String targetUrl = "/dashboard/user/info/index";
 //        Set<String> privilegeSet = userInfoService.getPrivilegeSet(userInfo);
 //        clientUserDetails.addPrivilegeKeys(privilegeSet);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
