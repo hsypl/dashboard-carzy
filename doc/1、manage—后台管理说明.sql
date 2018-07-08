@@ -1,6 +1,3 @@
-set character_set_client=utf8,character_set_connection=utf8,character_set_results=utf8;
-CREATE DATABASE IF NOT EXISTS ilearning_op DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-USE ilearning_op;
 
 -- -----------------------------------------------------------------------------
 -- 4.1、平台系统菜单信息表

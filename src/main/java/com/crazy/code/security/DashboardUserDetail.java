@@ -1,6 +1,7 @@
 package com.crazy.code.security;
 
 import com.crazy.dashboard.model.UserInfo;
+import com.crazy.dashboard.model.system.CommandInfo;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -64,16 +65,24 @@ public class DashboardUserDetail implements UserDetails {
         return true;
     }
 
-//    /**
-//     * 判断用户是否有命令的使用权限,如果为超级管理员或模块信息为空可使用,
-//     * 否则需要根据用户的权限集合判断是否可用。
-//     * @param commandInfo CommandInfo 命令信息对象
-//     * @return 如果允许使用返回 true, 否则返回 false
-//     */
-//    public boolean hasPermission(CommandInfo commandInfo) {
-//        return (commandInfo == null || privilegeKeySet.contains(commandInfo.getCommandKey()));
-//    }
-//
+    /**
+     * 判断是否是超级管理员
+     * @return boolean 是返回true, 否返回false
+     */
+    public boolean isAdmin() {
+        return userInfo.getAdmin() == 1;
+    }
+
+    /**
+     * 判断用户是否有命令的使用权限,如果为超级管理员或模块信息为空可使用,
+     * 否则需要根据用户的权限集合判断是否可用。
+     * @param commandInfo CommandInfo 命令信息对象
+     * @return 如果允许使用返回 true, 否则返回 false
+     */
+    public boolean hasPermission(CommandInfo commandInfo) {
+        return isAdmin() || (commandInfo == null || privilegeKeySet.contains(commandInfo.getCommandKey()));
+    }
+
 //    /**
 //     * 判断用户是否有模块的使用权限,如果为超级管理员可使用,
 //     * 否则需要根据用户的权限集合判断是否可用。

@@ -15,7 +15,7 @@
 
     <http authentication-manager-ref="manageAuthenticationManager" >
         <intercept-url pattern="/dashboard/**" access="isAuthenticated()"/>
-        <!--<custom-filter ref="commandAccessDecisionFilter" after="LAST"/>-->
+        <custom-filter ref="commandAccessDecisionFilter" after="LAST"/>
         <form-login login-page="/dashboard/login"
                     authentication-success-handler-ref="authenticationSuccessHandler"
                     authentication-failure-url="/dashboard/loginFailed"

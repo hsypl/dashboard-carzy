@@ -1,6 +1,7 @@
 package com.crazy.dashboard.interceptor;
 
 import com.crazy.dashboard.model.system.ModuleTree;
+import com.crazy.dashboard.service.UserInfoService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,9 @@ public class CommandAssembleInterceptor extends HandlerInterceptorAdapter {
     private boolean caseSensitive;
 
     @Autowired
+    private UserInfoService userInfoService;
+
+    @Autowired
     private ModuleTree moduleTree;
 
     private Set<String> excludeSuffix;
@@ -48,6 +52,7 @@ public class CommandAssembleInterceptor extends HandlerInterceptorAdapter {
     public void setCaseSensitive(boolean caseSensitive) {
         this.caseSensitive = caseSensitive;
     }
+
 
     @Override
     public void postHandle(HttpServletRequest request,

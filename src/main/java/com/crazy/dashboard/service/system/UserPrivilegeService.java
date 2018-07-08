@@ -184,45 +184,51 @@ public class UserPrivilegeService
         delete(userPrivilege.getId());
     }
 
-    public JstreeItem getUserPrivilege(){
+    public JstreeItem getUserPrivilege(String userId){
+        List<Long> commandIdList
+                = getItemIdListByUserIdAndType(userId,ItemTypeEnum.COMMAND.getValue());
         Map<String,Boolean> state = new HashMap<>();
         state.put("opened",true);
         JstreeItem jstreeItem = new JstreeItem();
         jstreeItem.setState(state);
         jstreeItem.setId("0");
         jstreeItem.setText("所有权限");
-        setMenu(jstreeItem);
+        setMenu(jstreeItem,commandIdList);
         return jstreeItem;
     }
 
-    public void setMenu(JstreeItem rootItem){
+    public void setMenu(JstreeItem rootItem,List<Long> commandIdList){
         for (MenuInfo menuInfo : moduleTree.getRootMenuList()) {
             JstreeItem menuItem = new JstreeItem();
             menuItem.setId(menuInfo.getMenuKey());
             menuItem.setText(menuInfo.getValue());
-            setModule(menuInfo,menuItem);
+            setModule(menuInfo,menuItem,commandIdList);
             rootItem.setChildren(menuItem);
         }
 
     }
 
-    public void setModule(MenuInfo menuInfo,JstreeItem menuItem){
+    public void setModule(MenuInfo menuInfo,JstreeItem menuItem,List<Long> commandIdList){
         for (ModuleInfo moduleInfo :menuInfo.getModuleList()) {
             JstreeItem moduleItem = new JstreeItem();
             moduleItem.setId(moduleInfo.getModuleKey());
             moduleItem.setText(moduleInfo.getValue());
-            setCommand(moduleInfo,moduleItem);
+            setCommand(moduleInfo,moduleItem,commandIdList);
             menuItem.setChildren(moduleItem);
         }
     }
 
-    public void setCommand(ModuleInfo moduleInfo,JstreeItem moduleItem){
+    public void setCommand(ModuleInfo moduleInfo,JstreeItem moduleItem,List<Long> commandIdList){
         for (CommandInfo commandInfo : moduleInfo.getCommandList()){
             JstreeItem commandItem = new JstreeItem();
             commandItem.setId(commandInfo.getCommandKey());
             commandItem.setText(commandInfo.getValue());
-
             moduleItem.setChildren(commandItem);
+            if (commandIdList.contains(commandInfo.getId())){
+                Map<String,Boolean> state = new HashMap<>();
+                state.put("select",true);
+                commandItem.setState(state);
+            }
         }
     }
 

@@ -16,9 +16,9 @@
           class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
     </bean>
 
-     <!--命令权限验证 -->
-    <!--<bean id="commandAccessDecisionFilter"-->
-          <!--class="com.hsy.core.security.CommandAccessDecisionFilter"/>-->
+     <!--命令权限验证-->
+    <bean id="commandAccessDecisionFilter"
+          class="com.crazy.code.security.CommandAccessDecisionFilter"/>
 
     <!--<bean id="partnersPermissionEvaluator" class="com.hsy.core.security.UserPermissionEvaluator"/>-->
 

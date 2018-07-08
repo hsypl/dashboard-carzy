@@ -42,10 +42,14 @@ public class UserRoleController {
 
     @Command(value = MODULE_NAME + "首页", isInlet = true, order = 1)
     @RequestMapping("/index")
-    public void index(Model model){
-        String userId = "5a3cb43b00f5f42f00000001";
-        model.addAttribute("privilegeList",GsonUtils.toJson(userPrivilegeService.getUserPrivilege()));
-       log.debug(GsonUtils.toJson(userPrivilegeService.getUserPrivilege()));
+    public void index(Model model,@RequestAttribute UserInfo userInfo){
+        model.addAttribute("privilegeList",GsonUtils.toJson(userPrivilegeService.getUserPrivilege(userInfo.getUid())));
+    }
+
+    @Command(value = MODULE_NAME + "保存", order = 1)
+    @RequestMapping("/index")
+    public void save(Model model,@RequestAttribute UserInfo userInfo){
+        model.addAttribute("privilegeList",GsonUtils.toJson(userPrivilegeService.getUserPrivilege(userInfo.getUid())));
     }
 
 }
