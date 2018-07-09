@@ -7,6 +7,7 @@ import com.crazy.code.web.DataTables;
 import com.crazy.dashboard.model.CoinMarketCap;
 import com.crazy.dashboard.model.UserInfo;
 import com.crazy.dashboard.service.UserInfoService;
+import com.crazy.dashboard.service.system.UserPrivilegeService;
 import com.google.gson.reflect.TypeToken;
 import com.sungness.core.util.GsonUtils;
 import com.sungness.core.util.UuidGenerator;
@@ -38,6 +39,9 @@ public class UserController {
 
     @Autowired
     private UserInfoService userInfoService;
+
+    @Autowired
+    private UserPrivilegeService userPrivilegeService;
 
     @Command(value = MODULE_NAME + "首页", isInlet = true, order = 1)
     @RequestMapping("/index")
@@ -82,6 +86,21 @@ public class UserController {
             userInfoService.update(userInfo);
         }
         return "redirect:/dashboard/user/edit?uid="+userInfo.getUid();
+    }
+
+    @Command(value = MODULE_NAME + "权限编辑",order = 6)
+    @RequestMapping("/authority")
+    public void index(Model model,@RequestParam String uid){
+        model.addAttribute("privilegeList",GsonUtils.toJson(userPrivilegeService.getUserPrivilege(uid)));
+        model.addAttribute("uid",uid);
+    }
+
+    @Command(value = MODULE_NAME + "权限保存", order = 7)
+    @RequestMapping("/authority/save")
+    public String save(@RequestParam String uid,@RequestParam String select) throws ServiceProcessException {
+        userPrivilegeService.save(uid,select);
+        return "redirect:"+URL_PREFIX+"/authority?uid="+uid;
+
     }
 
 }

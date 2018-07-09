@@ -132,7 +132,7 @@
                 {
                     data: null,
                     orderable: false,
-                    width: "120px"
+                    width: "150px"
                 }
             ],
             columnDefs: [{
@@ -141,8 +141,10 @@
                     var uid =  row.uid ;
                     var editUrl = "/dashboard/user/info/edit?uid="+uid;
                     var deleteUrl = "/dashboard/user/info/delete?uid="+uid;
+                    var authorityUrl = "/dashboard/user/info/authority?uid="+uid;
                     return "<a class='btn btn-default' href = " +editUrl +" ><i class='fa fa-pencil-square-o fa-lg'></i></a>"+
-                    "<a class='btn btn-default' href = " +deleteUrl +" ><i class='fa fa-trash fa-lg'></i></a>";
+                    "<a class='btn btn-default' href = " +deleteUrl +" ><i class='fa fa-trash fa-lg'></i></a>"+
+                            "<a class='btn btn-default' href = " +authorityUrl +" ><i class='fa fa-cog fa-lg'></i></a>";
 //                    return "<a class='btn btn-default' onclick=edit(" + uid + ");><i class='fa fa-pencil-square-o fa-lg'></i></a>" +
 //                            "<a class='btn btn-default' onclick=edit(" + id + ");><i class='fa fa-trash fa-lg'></i></a>";
                 }

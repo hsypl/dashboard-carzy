@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <div class="col-md-3 left_col">
     <div class="left_col scroll-view">
         <div class="navbar nav_title" style="border: 0;">
@@ -29,16 +29,20 @@
                 <ul class="nav side-menu">
                     <c:forEach items="${moduleTree.rootMenuList}" varStatus="menuStatus">
                         <c:set var="menuInfo" value="${menuStatus.current}"/>
+                        <sec:authorize access="hasPermission(#menuInfo, '')">
                         <li><a><i class="${menuInfo.icon}"></i> ${menuInfo.value} <span
                                 class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
                                 <c:forEach items="${menuInfo.moduleList}" varStatus="moduleList">
                                     <c:set var="module" value="${moduleList.current}"/>
+                                    <sec:authorize access="hasPermission(#module, '')">
                                     <li><a href="${module.inletUri}">
                                         <i class="${module.icon}"></i> ${module.value}</a></li>
+                                    </sec:authorize>
                                 </c:forEach>
                             </ul>
                         </li>
+                        </sec:authorize>
                     </c:forEach>
                     <%--<li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>--%>
                         <%--<ul class="nav child_menu">--%>

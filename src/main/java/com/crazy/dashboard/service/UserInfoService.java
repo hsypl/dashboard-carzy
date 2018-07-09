@@ -5,6 +5,8 @@ import com.crazy.code.service.ServiceProcessException;
 import com.crazy.code.service.StringPKBaseService;
 import com.crazy.dashboard.dao.UserInfoMapper;
 import com.crazy.dashboard.model.UserInfo;
+import com.crazy.dashboard.model.system.UserPrivilege;
+import com.crazy.dashboard.service.system.UserPrivilegeService;
 import com.sungness.core.util.UuidGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.ognl.IntHashMap;
@@ -14,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
 * 用户信息 业务处理类
@@ -29,6 +31,9 @@ public class UserInfoService
 
     @Autowired
     private UserInfoMapper userInfoMapper;
+
+    @Autowired
+    private UserPrivilegeService userPrivilegeService;
 
     /**
     * 获取数据层mapper接口对象，子类必须实现该方法
@@ -69,6 +74,18 @@ public class UserInfoService
             insert(userInfo);
         }
         update(userInfo);
+    }
+
+    /**
+     * 根据用户id获取权限key集合,包括其角色的权限
+     * @return Set<String> 权限 key 集合
+     */
+    public Set<String> getPrivilegeSet(UserInfo userInfo) {
+        Set<String> privilegeSet = new HashSet<>();
+        List<UserPrivilege> userPrivilegeList =
+                userPrivilegeService.getListByUserId(userInfo.getUid());
+        privilegeSet.addAll(userPrivilegeList.stream().map(UserPrivilege::getPrivilegeKey).collect(Collectors.toList()));
+        return privilegeSet;
     }
 
 }

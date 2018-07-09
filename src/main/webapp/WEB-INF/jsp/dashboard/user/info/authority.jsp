@@ -31,6 +31,13 @@
                                 <h2>Plain Page</h2>
                                 <div class="clearfix"></div>
                             </div>
+                            <div class="toolbar">
+                                <form action="/dashboard/user/info/authority/save">
+                                    <input type="text" name="uid" value="${uid}" hidden/>
+                                    <input type="text" name="select" id="select" hidden/>
+                                    <button class="btn btn-success" type="submit">提交</button>
+                                </form>
+                            </div>
                             <div class="x_content">
                                 <div id="container"></div>
                             </div>
@@ -67,8 +74,15 @@
                 console.log(data);
                 var i, j, r = [];
                 for(i = 0, j = data.selected.length; i < j; i++) {
-                    r.push(data.instance.get_node(data.selected[i]).text);
+                    var node = data.instance.get_node(data.selected[i]);
+                    r.push(node.id);
+                    var type = node.id.split("-");
+                    if ($.inArray(node.parent,r) === -1 && type === "2"){
+                        r.push(node.parent);
+                        r.push(node.parents[node.parents.length - 3]);
+                    }
                 }
+                $("#select").val(r);
                 console.log(r);
             })
             // create the instance

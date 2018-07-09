@@ -40,5 +40,12 @@
         <property name="passwordEncoder" ref="bcryptEncoder"/>
     </bean>
 
+    <bean id="permissionEvaluator" class="com.crazy.code.security.UserPermissionEvaluator"/>
+
+    <bean id="expressionHandler"
+          class= "org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler">
+        <property name="permissionEvaluator" ref="permissionEvaluator"/>
+    </bean>
+
 
 </beans>

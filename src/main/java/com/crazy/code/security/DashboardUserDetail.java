@@ -2,6 +2,8 @@ package com.crazy.code.security;
 
 import com.crazy.dashboard.model.UserInfo;
 import com.crazy.dashboard.model.system.CommandInfo;
+import com.crazy.dashboard.model.system.MenuInfo;
+import com.crazy.dashboard.model.system.ModuleInfo;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -83,25 +85,25 @@ public class DashboardUserDetail implements UserDetails {
         return isAdmin() || (commandInfo == null || privilegeKeySet.contains(commandInfo.getCommandKey()));
     }
 
-//    /**
-//     * 判断用户是否有模块的使用权限,如果为超级管理员可使用,
-//     * 否则需要根据用户的权限集合判断是否可用。
-//     * @param moduleInfo ModuleInfo 模块信息对象
-//     * @return 如果允许使用返回 true, 否则返回 false
-//     */
-//    public boolean hasPermission(ModuleInfo moduleInfo) {
-//        return moduleInfo != null && privilegeKeySet.contains(moduleInfo.getModuleKey());
-//    }
-//
-//    /**
-//     * 判断用户是否有菜单的使用权限,如果为超级管理员可使用,
-//     * 否则需要根据用户的权限集合判断是否可用。
-//     * @param menuInfo MenuInfo 菜单信息对象
-//     * @return 如果允许使用返回 true, 否则返回 false
-//     */
-//    public boolean hasPermission(MenuInfo menuInfo) {
-//        return menuInfo != null && privilegeKeySet.contains(menuInfo.getMenuKey());
-//    }
+    /**
+     * 判断用户是否有模块的使用权限,如果为超级管理员可使用,
+     * 否则需要根据用户的权限集合判断是否可用。
+     * @param moduleInfo ModuleInfo 模块信息对象
+     * @return 如果允许使用返回 true, 否则返回 false
+     */
+    public boolean hasPermission(ModuleInfo moduleInfo) {
+        return isAdmin() || (moduleInfo != null && privilegeKeySet.contains(moduleInfo.getModuleKey()));
+    }
+
+    /**
+     * 判断用户是否有菜单的使用权限,如果为超级管理员可使用,
+     * 否则需要根据用户的权限集合判断是否可用。
+     * @param menuInfo MenuInfo 菜单信息对象
+     * @return 如果允许使用返回 true, 否则返回 false
+     */
+    public boolean hasPermission(MenuInfo menuInfo) {
+        return isAdmin() || (menuInfo != null && privilegeKeySet.contains(menuInfo.getMenuKey()));
+    }
 
     /**
      * 添加用户的权限集合, 用户成功登录时会触发调用该方法

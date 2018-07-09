@@ -38,8 +38,8 @@ public class AuthenticationSuccessHandler
                 (DashboardUserDetail) authentication.getPrincipal();
         UserInfo userInfo = clientUserDetails.getUserInfo();
         String targetUrl = "/dashboard/user/info/index";
-//        Set<String> privilegeSet = userInfoService.getPrivilegeSet(userInfo);
-//        clientUserDetails.addPrivilegeKeys(privilegeSet);
+        Set<String> privilegeSet = userInfoService.getPrivilegeSet(userInfo);
+        clientUserDetails.addPrivilegeKeys(privilegeSet);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
 
     }

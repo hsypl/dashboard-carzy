@@ -4,18 +4,19 @@ import com.crazy.code.annotation.Menu;
 import com.crazy.code.dao.GenericMapper;
 import com.crazy.code.web.JstreeItem;
 import com.crazy.dashboard.dao.system.UserPrivilegeMapper;
+import com.crazy.dashboard.model.UserInfo;
 import com.crazy.dashboard.model.system.*;
 import com.crazy.code.service.LongPKBaseService;
 import com.crazy.code.service.ServiceProcessException;
+import com.crazy.dashboard.service.UserInfoService;
+import com.sungness.core.util.tools.IntegerTools;
+import com.sungness.core.util.tools.LongTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -42,6 +43,9 @@ public class UserPrivilegeService
 
     @Autowired
     private ModuleTree moduleTree;
+
+    @Autowired
+    private UserInfoService userInfoService;
 
 
     /**
@@ -122,54 +126,6 @@ public class UserPrivilegeService
         insert(userPrivilege);
     }
 
-//    public void save(UserInfo userInfo) throws ServiceProcessException {
-//        List<ModuleInfo> moduleInfoList;
-//        if (JudgeEnum.valueOf(userInfo.getAdmin()) == JudgeEnum.YES){
-//            moduleInfoList = moduleInfoService.getVailMenuInfoList();
-//        }else {
-//            moduleInfoList = moduleInfoService.getListByModuleIdList(userInfo.getModuleIdList());
-//        }
-//        if(!moduleInfoList.isEmpty()){
-//            saveByModuleInfoList(moduleInfoList,userInfo);
-//        }else {
-//            for (UserPrivilege userPrivilege : getListByUserId(userInfo.getUid())){
-//                delete(userPrivilege.getId());
-//            }
-//        }
-//
-//    }
-
-//    public void saveByModuleInfoList(List<ModuleInfo> moduleInfoList,UserInfo userInfo) throws ServiceProcessException {
-//        List<Long> oldModuleIdList
-//                = getItemIdListByUserIdAndType(userInfo.getUid(),ItemTypeEnum.MODULE.getValue());
-//        List<Long> oldCommandIdList
-//                = getItemIdListByUserIdAndType(userInfo.getUid(),ItemTypeEnum.COMMAND.getValue());
-//        for (ModuleInfo moduleInfo : moduleInfoList){
-//            if(!oldModuleIdList.contains(moduleInfo.getId())){
-//                save(moduleInfo.getId(),ItemTypeEnum.MODULE.getValue(),userInfo.getUid());
-//                //保存command
-//                List<CommandInfo> commandInfoList = commandInfoService.getListByModuleId(moduleInfo.getId());
-//                for (CommandInfo commandInfo : commandInfoList){
-//                    if (!oldCommandIdList.contains(commandInfo.getId())){
-//                        save(commandInfo.getId(),ItemTypeEnum.COMMAND.getValue(),userInfo.getUid());
-//                    }
-//                    oldCommandIdList.remove(commandInfo.getId());
-//                }
-//            }
-//            oldModuleIdList.remove(moduleInfo.getId());
-//            List<CommandInfo> commandInfoList = commandInfoService.getListByModuleId(moduleInfo.getId());
-//            for (CommandInfo commandInfo : commandInfoList){
-//                oldCommandIdList.remove(commandInfo.getId());
-//            }
-//        }
-//        for (Long deleteModuleId : oldModuleIdList){
-//            deleteByItemIdAndUserIdAndType(userInfo.getUid(),deleteModuleId,ItemTypeEnum.MODULE.getValue());
-//        }
-//        for (Long deleteCommandId : oldCommandIdList){
-//            deleteByItemIdAndUserIdAndType(userInfo.getUid(),deleteCommandId,ItemTypeEnum.COMMAND.getValue());
-//        }
-//    }
-
     public UserPrivilege getByUserAndItemIdAndType(String userId,Long itemId,Integer type){
         Map<String,Object> params = new HashMap<>();
         params.put("userId",userId);
@@ -198,10 +154,13 @@ public class UserPrivilegeService
     }
 
     public void setMenu(JstreeItem rootItem,List<Long> commandIdList){
+        Map<String,Boolean> state = new HashMap<>();
+        state.put("opened",true);
         for (MenuInfo menuInfo : moduleTree.getRootMenuList()) {
             JstreeItem menuItem = new JstreeItem();
             menuItem.setId(menuInfo.getMenuKey());
             menuItem.setText(menuInfo.getValue());
+            menuItem.setState(state);
             setModule(menuInfo,menuItem,commandIdList);
             rootItem.setChildren(menuItem);
         }
@@ -209,10 +168,13 @@ public class UserPrivilegeService
     }
 
     public void setModule(MenuInfo menuInfo,JstreeItem menuItem,List<Long> commandIdList){
+        Map<String,Boolean> state = new HashMap<>();
+        state.put("opened",true);
         for (ModuleInfo moduleInfo :menuInfo.getModuleList()) {
             JstreeItem moduleItem = new JstreeItem();
             moduleItem.setId(moduleInfo.getModuleKey());
             moduleItem.setText(moduleInfo.getValue());
+            moduleItem.setState(state);
             setCommand(moduleInfo,moduleItem,commandIdList);
             menuItem.setChildren(moduleItem);
         }
@@ -226,11 +188,42 @@ public class UserPrivilegeService
             moduleItem.setChildren(commandItem);
             if (commandIdList.contains(commandInfo.getId())){
                 Map<String,Boolean> state = new HashMap<>();
-                state.put("select",true);
+                state.put("selected",true);
                 commandItem.setState(state);
             }
         }
     }
+
+    public void save(String uid,String select) throws ServiceProcessException {
+        List<UserPrivilege> oldUserPrivilegeList = getListByUserId(uid);
+        Map<String, UserPrivilege> oldPrivilegeMap = buildPrivilegeMap(oldUserPrivilegeList);
+        if(select.length() == 0){
+            for (UserPrivilege userPrivilege : oldPrivilegeMap.values()){
+                delete(userPrivilege.getId());
+            }
+            return;
+        }
+        String itemKeys[] = select.split(",");
+        for (String itemKey : itemKeys){
+            if (itemKey.equals("0")){
+                continue;
+            }
+            if (oldPrivilegeMap.containsKey(itemKey)){
+                oldPrivilegeMap.remove(itemKey);
+            }else {
+                String[] keyPair = itemKey.split("-");
+                UserPrivilege userPrivilege = new UserPrivilege();
+                userPrivilege.setUserId(uid);
+                userPrivilege.setItemType(IntegerTools.parse(keyPair[0]));
+                userPrivilege.setItemId(LongTools.parse(keyPair[1]));
+                insert(userPrivilege);
+            }
+        }
+        for (UserPrivilege userPrivilege : oldPrivilegeMap.values()){
+            delete(userPrivilege.getId());
+        }
+    }
+
 
 
 
