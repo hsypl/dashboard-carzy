@@ -1,6 +1,7 @@
 package com.crazy.dashboard.model;
 
-import com.sungness.core.util.DateUtil;
+
+import com.crazy.code.util.DateUtil;
 
 import java.io.Serializable;
 

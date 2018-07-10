@@ -19,7 +19,7 @@
         class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
         <property name="basenames">
             <list>
-                <value>classpath:conf/message-properties/fields/mm/mmCpCorp</value>
+                <value>classpath:conf/message-properties/fields/coinMarketCap</value>
             </list>
         </property>
         <property name="useCodeAsDefaultMessage" value="true"/>
@@ -28,15 +28,8 @@
         <property name="cacheSeconds" value="180" />
     </bean>
 
-    <!--<bean id="i18n" class="com.msymobile.core.web.I18nMessage">-->
-        <!--<property name="messageSource" ref="messageSource"/>-->
-    <!--</bean>-->
-
-    <!-- 
-        Theme source for this context, loaded from localized "themes_xx" files.
-    -->
-    <bean id="themeSource"
-        class="org.springframework.ui.context.support.ResourceBundleThemeSource">
-        <property name="basenamePrefix" value="conf/config-properties/" />
+    <bean id="i18n" class="com.crazy.code.message.I18nMessage">
+        <property name="messageSource" ref="messageSource"/>
     </bean>
+
 </beans>

@@ -1,16 +1,16 @@
 package com.crazy.dashboard.service;
 
 import com.crazy.code.dao.GenericMapper;
+import com.crazy.code.httpclient.HttpClientException;
+import com.crazy.code.httpclient.HttpClientUtils;
 import com.crazy.code.service.ServiceProcessException;
 import com.crazy.code.service.StringPKBaseService;
+import com.crazy.code.util.GsonUtils;
+import com.crazy.code.util.tools.DoubleTools;
+import com.crazy.code.util.tools.LongTools;
 import com.crazy.dashboard.dao.CoinMarketCapMapper;
 import com.crazy.dashboard.model.CoinMarketCap;
 import com.google.gson.reflect.TypeToken;
-import com.sungness.core.httpclient.HttpClientException;
-import com.sungness.core.httpclient.HttpClientUtils;
-import com.sungness.core.util.GsonUtils;
-import com.sungness.core.util.tools.DoubleTools;
-import com.sungness.core.util.tools.LongTools;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

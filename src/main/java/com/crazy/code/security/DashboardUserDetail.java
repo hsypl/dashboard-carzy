@@ -27,10 +27,7 @@ public class DashboardUserDetail implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> auths = new ArrayList<>();
-            auths.add(new SimpleGrantedAuthority("ROLE_PLATFORMADMIN"));
-            auths.add(new SimpleGrantedAuthority("abc"));
-        return auths;
+        return null;
     }
 
     public UserInfo getUserInfo(){

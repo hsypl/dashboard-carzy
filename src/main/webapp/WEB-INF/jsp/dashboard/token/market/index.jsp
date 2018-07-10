@@ -12,11 +12,6 @@
 
     <link href="<s:url value="/media/vendors/dateTimePicker/bootstrap-datetimepicker.min.css"/>" rel="stylesheet">
     <%--<link href="/media/vendors/css/iCheck/skins/flat/green.css" rel="stylesheet">--%>
-    <style>
-        .toolbar {
-            float: left;
-        }
-    </style>
 </head>
 
 <body class="nav-md">
@@ -54,6 +49,12 @@
                     </div>
                     <div class="x_content">
                         <div class="toolbar">
+                            <div class="btn-group" style="margin-top: 10px;margin-bottom: 20px">
+                                <button class="btn btn-success" type="button" onclick="down()">下载</button>
+                                <a href="/dashboard/token/market/download" class="btn btn-success" type="button">新增</a>
+                            </div>
+                        </div>
+                        <div class="searchTool">
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="form-group">
@@ -68,14 +69,6 @@
                                 </div>
                             </div>
                         </div>
-                        <%--<div class="form-group">--%>
-
-                        <%--<div class="input-group date form_date col-md-2" id="datetimepicker" data-date="" data-date-format="yyyy-mm-dd">--%>
-                        <%--<input class="form-control" size="8" type="text"  placeholder="选择时间">--%>
-                        <%--<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>--%>
-                        <%--<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>--%>
-                        <%--</div>--%>
-                        <%--</div>--%>
                         <table id="example" class="table table-striped table-bordered bulk_action">
                             <thead>
                             <tr>
@@ -114,6 +107,7 @@
 <%--<script src="/media/vendors/jquery/icheck.min.js"></script>--%>
 <script>
     var table;
+    var param = {};
     $('#datetimepicker').datetimepicker({
         format: 'YYYY-MM-DD'
     }).on("dp.change", function () {
@@ -176,7 +170,6 @@
 
     function ajaxTable(data, callback, settings) {
         //封装请求参数
-        var param = {};
         var filter = {};
         data['columns'].forEach(function (val) {
             if (val['search'].value != ''){
@@ -198,7 +191,33 @@
         console.log(param);
         $.ajax({
             type: "POST",
-            url: "/dashboard/table/list",
+            url: "/dashboard/token/market/list",
+            contentType: "application/json",
+            cache: false,  //禁用缓存
+            data: JSON.stringify(param),  //传入组装的参数
+            dataType: "json",
+            success: function (response) {
+                if (response.code === 0) {
+                    var returnData = {};
+                    returnData.draw = response.draw;
+                    returnData.recordsTotal = response.pagination.totalCount;
+                    returnData.recordsFiltered = response.pagination.totalCount;
+                    if (response.data === null) {
+                        response.data = {};
+                    }
+                    returnData.data = response.data;//返回的数据列表
+                    callback(returnData);
+                } else {
+//                    sweetAlert("请求失败！");
+                }
+            }
+        });
+    }
+
+    function down(){
+        $.ajax({
+            type: "POST",
+            url: "/dashboard/token/market/down",
             contentType: "application/json",
             cache: false,  //禁用缓存
             data: JSON.stringify(param),  //传入组装的参数

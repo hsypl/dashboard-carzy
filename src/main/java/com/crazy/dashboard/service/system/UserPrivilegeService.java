@@ -2,6 +2,8 @@ package com.crazy.dashboard.service.system;
 
 import com.crazy.code.annotation.Menu;
 import com.crazy.code.dao.GenericMapper;
+import com.crazy.code.util.tools.IntegerTools;
+import com.crazy.code.util.tools.LongTools;
 import com.crazy.code.web.JstreeItem;
 import com.crazy.dashboard.dao.system.UserPrivilegeMapper;
 import com.crazy.dashboard.model.UserInfo;
@@ -9,8 +11,6 @@ import com.crazy.dashboard.model.system.*;
 import com.crazy.code.service.LongPKBaseService;
 import com.crazy.code.service.ServiceProcessException;
 import com.crazy.dashboard.service.UserInfoService;
-import com.sungness.core.util.tools.IntegerTools;
-import com.sungness.core.util.tools.LongTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

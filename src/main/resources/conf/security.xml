@@ -13,16 +13,17 @@
     <http pattern="/dashboard/loginFailed" security="none"/>
     <http pattern="/media/**" security="none"/>
 
-    <http authentication-manager-ref="manageAuthenticationManager" >
+    <http authentication-manager-ref="manageAuthenticationManager"  >
         <intercept-url pattern="/dashboard/**" access="isAuthenticated()"/>
         <custom-filter ref="commandAccessDecisionFilter" after="LAST"/>
         <form-login login-page="/dashboard/login"
                     authentication-success-handler-ref="authenticationSuccessHandler"
-                    authentication-failure-url="/dashboard/loginFailed"
+                    authentication-failure-url="/dashboard/login"
                     default-target-url="/dailys/assets/index"/>
         <logout logout-url="/logout" delete-cookies="JSESSIONID"
-                logout-success-url="/loginIndex"/>
+                logout-success-url="/dashboard/login"/>
         <csrf disabled="true" />
+        <anonymous enabled="false"/>
     </http>
 
     <authentication-manager id="manageAuthenticationManager"

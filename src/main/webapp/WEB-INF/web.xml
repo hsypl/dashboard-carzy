@@ -15,6 +15,7 @@
       classpath:conf/service.xml
       classpath:conf/resources.xml
       classpath:conf/security.xml
+      classpath:conf/messages.xml
     </param-value>
   </context-param>
 
