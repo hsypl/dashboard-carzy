@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- 
+        Message source for this context, loaded from localized "messages_xx",
+        "ValidationMessages_xx" files.
+        
+        Disable the fallback mechanism to the system/JVM locale. By turning off this behavior, CAS
+        will be able to revert back to the default language bundle that is "messages.properties"
+        and will not rely on the JVM default locale which introduces the side effect of rendering
+        the UI in the JVM locale by default.
+
+        Also, explicitly set the default encoding to be UTF-8 when parsing message bundles.
+        The default, if not set, is none which forces ISO-8859-1 of java.util.ResourceBundle.
+    -->
+    <bean id="messageSource"
+        class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>classpath:conf/message-properties/fields/mm/mmCpCorp</value>
+            </list>
+        </property>
+        <property name="useCodeAsDefaultMessage" value="true"/>
+        <property name="fallbackToSystemLocale" value="false" />
+        <property name="defaultEncoding" value="UTF-8" />
+        <property name="cacheSeconds" value="180" />
+    </bean>
+
+    <!--<bean id="i18n" class="com.msymobile.core.web.I18nMessage">-->
+        <!--<property name="messageSource" ref="messageSource"/>-->
+    <!--</bean>-->
+
+    <!-- 
+        Theme source for this context, loaded from localized "themes_xx" files.
+    -->
+    <bean id="themeSource"
+        class="org.springframework.ui.context.support.ResourceBundleThemeSource">
+        <property name="basenamePrefix" value="conf/config-properties/" />
+    </bean>
+</beans>
