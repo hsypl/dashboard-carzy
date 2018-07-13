@@ -42,7 +42,7 @@
                             <div class="x_content">
                                 <div class="toolbar">
                                     <div class="btn-group" style="margin-top: 10px;margin-bottom: 20px">
-                                        <a href="${editUrl}" class="btn btn-success" type="button">新增</a>
+                                        <a href="/dashboard/user/info/edit" class="btn btn-success" type="button">新增</a>
                                         <a href="${editUrl}" class="btn btn-success" type="button">编辑</a>
                                         <button type="button" class="btn btn-default">删除</button>
                                     </div>
@@ -196,7 +196,7 @@
                     returnData.data = response.data;//返回的数据列表
                     callback(returnData);
                 } else {
-//                    sweetAlert("请求失败！");
+                    alert("请求失败！");
                 }
             }
         });

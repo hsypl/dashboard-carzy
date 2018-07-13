@@ -16,20 +16,22 @@
           class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
     </bean>
 
-     <!--命令权限验证-->
+    <!--命令权限验证-->
     <bean id="commandAccessDecisionFilter"
           class="com.crazy.code.security.CommandAccessDecisionFilter"/>
 
     <!--<bean id="partnersPermissionEvaluator" class="com.hsy.core.security.UserPermissionEvaluator"/>-->
 
     <!--<bean id="expressionHandler"-->
-          <!--class= "org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler">-->
-        <!--<property name="permissionEvaluator" ref="partnersPermissionEvaluator"/>-->
+    <!--class= "org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler">-->
+    <!--<property name="permissionEvaluator" ref="partnersPermissionEvaluator"/>-->
     <!--</bean>-->
 
 
     <bean id="authenticationSuccessHandler"
-          class="com.crazy.code.security.AuthenticationSuccessHandler"/>
+          class="com.crazy.code.security.AuthenticationSuccessHandler">
+        <property name="defaultTargetUrl" value="/dashboard/index"/>
+    </bean>
 
     <bean id="authenticationFailureHandler"
           class="com.crazy.code.security.AuthenticationFailureHandler"/>
@@ -43,7 +45,7 @@
     <bean id="permissionEvaluator" class="com.crazy.code.security.UserPermissionEvaluator"/>
 
     <bean id="expressionHandler"
-          class= "org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler">
+          class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler">
         <property name="permissionEvaluator" ref="permissionEvaluator"/>
     </bean>
 

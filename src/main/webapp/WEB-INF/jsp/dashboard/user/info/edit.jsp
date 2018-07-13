@@ -37,7 +37,7 @@
                             <div class="x_content">
                                 <div class="row">
                                     <div class="col-md-4">
-                                    <form:form commandName="userInfo" data-toggle="validator" role="form" action="/dashboard/user/save">
+                                    <form:form commandName="userInfo" data-toggle="validator" role="form" action="/dashboard/user/info/save">
                                         <form data-toggle="validator" role="form">
                                             <div class="form-group">
                                                 <label for="username" class="control-label">账号</label>

@@ -9,6 +9,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -37,9 +39,16 @@ public class AuthenticationSuccessHandler
         DashboardUserDetail clientUserDetails =
                 (DashboardUserDetail) authentication.getPrincipal();
         UserInfo userInfo = clientUserDetails.getUserInfo();
-        String targetUrl = "/dashboard/user/info/index";
         Set<String> privilegeSet = userInfoService.getPrivilegeSet(userInfo);
         clientUserDetails.addPrivilegeKeys(privilegeSet);
+        SavedRequest savedRequest = requestCache.getRequest(request, response);
+        if (savedRequest == null) {
+            log.debug("savedRequest is null");
+            log.debug("getDefaultTargetUrl=" + getDefaultTargetUrl());
+            super.onAuthenticationSuccess(request, response, authentication);
+            return;
+        }
+        String targetUrl = savedRequest.getRedirectUrl();
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
 
     }

@@ -34,14 +34,30 @@
         <!-- <property name="validationMessageSource" ref="messageSource"/>-->
     </bean>
 
+    <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="mediaTypes">
+            <value>
+                xls=application/vnd.ms-excel
+                json=application/json
+                xml=application/xml
+                html=text/html
+            </value>
+        </property>
+    </bean>
+
     <!-- 视图解析器定义 -->
     <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
         <property name="order" value="1"/>
         <property name="contentNegotiationManager" ref="contentNegotiationManager"/>
         <property name="viewResolvers">
             <list>
+                <bean id="excelViewResolver" class="org.springframework.web.servlet.view.XmlViewResolver">
+                    <property name="order" value="1"/>
+                    <property name="location" value="classpath:conf/views.xml"/>
+                </bean>
                 <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
                 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+                    <property name="order" value="5"/>
                     <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
                     <property name="prefix" value="/WEB-INF/jsp/" />
                     <property name="suffix" value=".jsp" />
@@ -56,17 +72,6 @@
     </bean>
 
     <mvc:default-servlet-handler/>
-
-    <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
-        <property name="mediaTypes">
-            <value>
-                xls=application/vnd.ms-excel
-                json=application/json
-                xml=application/xml
-                html=text/html
-            </value>
-        </property>
-    </bean>
 
     <!-- 定义公共控制器 -->
     <bean id="defaultHandlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>

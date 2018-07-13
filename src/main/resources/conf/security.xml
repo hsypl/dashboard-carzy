@@ -9,19 +9,23 @@
 
     <beans:import resource="security-service.xml"/>
 
+    <http pattern="/media/**" security="none"/>
     <http pattern="/dashboard/login" security="none"/>
     <http pattern="/dashboard/loginFailed" security="none"/>
-    <http pattern="/media/**" security="none"/>
+    <http pattern="/dashboard/sessionOut" security="none"/>
+    <http pattern="/dashboard/logoutSuccess" security="none"/>
 
     <http authentication-manager-ref="manageAuthenticationManager"  >
         <intercept-url pattern="/dashboard/**" access="isAuthenticated()"/>
         <custom-filter ref="commandAccessDecisionFilter" after="LAST"/>
         <form-login login-page="/dashboard/login"
                     authentication-success-handler-ref="authenticationSuccessHandler"
-                    authentication-failure-url="/dashboard/login"
-                    default-target-url="/dailys/assets/index"/>
-        <logout logout-url="/logout" delete-cookies="JSESSIONID"
-                logout-success-url="/dashboard/login"/>
+                    authentication-failure-url="/dashboard/login"/>
+        <logout logout-url="/dashboard/logout" delete-cookies="JSESSIONID,jsessionid"
+                logout-success-url="/dashboard/logoutSuccess"/>
+        <session-management session-authentication-error-url="/dashboard/sessionOut"
+                            invalid-session-url="/dashboard/sessionOut"/>
+        <access-denied-handler error-page="/dashboard/noPermission"/>
         <csrf disabled="true" />
         <anonymous enabled="false"/>
     </http>

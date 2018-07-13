@@ -64,13 +64,13 @@ public class CoinMarketCapController {
     @Command(value = MODULE_NAME + "下载", order = 5)
     @RequestMapping("/download")
     public ModelAndView download(
-            HttpServletRequest request,
+            @RequestParam String downData,
             HttpServletResponse response)
             throws UnsupportedEncodingException, ServiceProcessException {
-//        queryFilter.init(request);
+        DataTables dataTables = GsonUtils.fromJson(downData,DataTables.class);
         Map<String, Object> modelData = new HashMap<>();
 //        String fileName = marketCapDownService.downloadStatList(queryFilter, modelData);
-        String fileName = marketCapDownService.downloadStatList(null, modelData);
+        String fileName = marketCapDownService.downloadStatList(dataTables, modelData);
         response.setHeader("X-Frame-Options", "SAMEORIGIN");
         response.setHeader(
                 "Content-Disposition",

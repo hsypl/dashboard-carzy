@@ -47,8 +47,7 @@ public class MarketCapDownService {
         modelData.put("sheetMeta", sheetMeta);
 //        List<CoinMarketCap> data = coinMarketCapService.
 //                getList(dataTables.getPagination(),dataTables.getFilter());
-        List<CoinMarketCap> data = coinMarketCapService.getList();
-//        List<CoinMarketCap> data = coinMarketCapService.getList(dataTables.getPagination(),dataTables.getFilter());
+        List<CoinMarketCap> data = coinMarketCapService.getList(dataTables.getPagination(),dataTables.getFilter());
         modelData.put("data", data);
         return fileName;
     }

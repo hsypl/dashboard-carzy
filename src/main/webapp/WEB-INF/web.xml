@@ -75,4 +75,9 @@
     <url-pattern>/index.html</url-pattern>
   </servlet-mapping>
 
+  <error-page>
+    <error-code>404</error-code>
+    <location>/dashboard/notFound</location>
+  </error-page>
+
 </web-app>

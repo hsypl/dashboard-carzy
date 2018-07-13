@@ -85,7 +85,7 @@ public class UserController {
         }else {
             userInfoService.update(userInfo);
         }
-        return "redirect:/dashboard/user/edit?uid="+userInfo.getUid();
+        return "redirect:/dashboard/user/info/edit?uid="+userInfo.getUid();
     }
 
     @Command(value = MODULE_NAME + "权限编辑",order = 6)

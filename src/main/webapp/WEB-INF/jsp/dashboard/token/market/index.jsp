@@ -50,8 +50,10 @@
                     <div class="x_content">
                         <div class="toolbar">
                             <div class="btn-group" style="margin-top: 10px;margin-bottom: 20px">
-                                <button class="btn btn-success" type="button" onclick="down()">下载</button>
-                                <a href="/dashboard/token/market/download" class="btn btn-success" type="button">新增</a>
+                                <form action="/dashboard/token/market/download.xls">
+                                    <input name = "downData" id="downData" hidden >
+                                    <button class="btn btn-success" type="submit" >下载</button>
+                                </form>
                             </div>
                         </div>
                         <div class="searchTool">
@@ -128,7 +130,7 @@
             //设置时间
             "stateSaveParams": function (settings, data) {
                 var time = data.columns[5].search.search;
-                if(time != 'NaN'){
+                if (time != 'NaN') {
                     $('#selectTime').val(time);
                 }
             },
@@ -172,8 +174,8 @@
         //封装请求参数
         var filter = {};
         data['columns'].forEach(function (val) {
-            if (val['search'].value != ''){
-                eval('filter.'+val.data+'='+val.search.value+';');
+            if (val['search'].value != '') {
+                eval('filter.' + val.data + '=' + val.search.value + ';');
             }
         });
         console.log(data);
@@ -188,6 +190,8 @@
         param.pagination = pagination;
         param.draw = data['draw'];
         param.filter = filter;
+        //把参数也添加到下载表单中
+        $("#downData").val(JSON.stringify(param));
         console.log(param);
         $.ajax({
             type: "POST",
@@ -214,7 +218,7 @@
         });
     }
 
-    function down(){
+    function down() {
         $.ajax({
             type: "POST",
             url: "/dashboard/token/market/down",

@@ -77,7 +77,7 @@
                     var node = data.instance.get_node(data.selected[i]);
                     r.push(node.id);
                     var type = node.id.split("-");
-                    if ($.inArray(node.parent,r) === -1 && type === "2"){
+                    if ($.inArray(node.parent,r) === -1 && type[0] === "2"){
                         r.push(node.parent);
                         r.push(node.parents[node.parents.length - 3]);
                     }

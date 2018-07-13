@@ -1,6 +1,7 @@
 package com.crazy.code.security;
 
 import com.crazy.dashboard.model.UserInfo;
+import com.crazy.dashboard.model.system.CommandInfo;
 import com.crazy.dashboard.model.system.ModuleTree;
 import com.crazy.dashboard.service.UserInfoService;
 import org.slf4j.Logger;
