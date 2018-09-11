@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/task
+		http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <import resource="spring-threadpool-config.xml" />
+    <task:annotation-driven executor="annotationExecutor" scheduler="annotationScheduler"/>
+    <!-- 支持 @Async 注解 -->
+    <task:executor id="annotationExecutor" pool-size="20"/>
+    <!-- 支持 @Scheduled 注解 -->
+    <task:scheduler id="annotationScheduler" pool-size="30"/>
+
+    <!--<task:scheduled-tasks scheduler="annotationScheduler">-->
+        <!--&lt;!&ndash;<task:scheduled ref="dailyCountSchedule" method="start"&ndash;&gt;-->
+                        <!--&lt;!&ndash;cron="0 0 1 * * ?"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;<task:scheduled ref="dailyHistorySchedule" method="start"&ndash;&gt;-->
+                        <!--&lt;!&ndash;cron="0 0 7 * * ?"/>&ndash;&gt;-->
+        <!--<task:scheduled ref="monitorSchedule" method="start"-->
+                        <!--fixed-delay="60000" initial-delay="10000"/>-->
+        <!--<task:scheduled ref="symbolSchedule" method="start"-->
+                        <!--fixed-delay="60000" initial-delay="7200"/>-->
+    <!--</task:scheduled-tasks>-->
+</beans>

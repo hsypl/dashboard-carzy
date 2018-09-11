@@ -29,6 +29,8 @@
     <bean id="moduleTree"
           class="com.crazy.dashboard.model.system.ModuleTree" />
 
+    <bean id="cacheInitializeListener" class="com.crazy.dashboard.listener.CacheInitializeListener"/>
+
     <!-- 定义事务管理规则 -->
     <tx:advice id="platformTxAdvice" transaction-manager="transactionManager">
         <tx:attributes>
@@ -43,6 +45,15 @@
             <tx:method name="*"/>
         </tx:attributes>
     </tx:advice>
+
+    <bean id="twitterProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="location" value="classpath:conf/twitter4j.properties"/>
+        <property name="fileEncoding" value="UTF-8"/>
+    </bean>
+
+    <bean id="twitterConfig" class="com.crazy.dashboard.config.TwitterConfig">
+        <property name="properties" ref="twitterProperties" />
+    </bean>
 
     <import resource="record/record-service.xml"/>
 </beans>

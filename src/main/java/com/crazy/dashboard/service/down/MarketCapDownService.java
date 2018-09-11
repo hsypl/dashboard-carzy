@@ -20,8 +20,8 @@ import java.util.Map;
 @Service
 public class MarketCapDownService {
 
-    @Autowired
-    private I18nMessage i18nMessage;
+//    @Autowired
+//    private I18nMessage i18nMessage;
 
     @Autowired
     private CoinMarketCapService coinMarketCapService;

@@ -16,6 +16,7 @@
       classpath:conf/resources.xml
       classpath:conf/security.xml
       classpath:conf/messages.xml
+      classpath:conf/scheduling.xml
     </param-value>
   </context-param>
 

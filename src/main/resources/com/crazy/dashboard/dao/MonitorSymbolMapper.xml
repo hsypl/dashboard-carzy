@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crazy.dashboard.dao.MonitorSymbolMapper">
+
+    <sql id="tableName">monitor_symbol</sql>
+
+    <sql id="columns_no_id">
+        symbol, exchange, sell_price, buy_price, type
+    </sql>
+
+    <sql id="columns">
+        id, <include refid="columns_no_id"/>
+    </sql>
+
+    <sql id="columns_join">
+        a.id, a.symbol, a.exchange, a.sell_price, a.buy_price, 
+        a.type
+    </sql>
+
+    <sql id="likeWhere" databaseId="mysql">
+    </sql>
+
+    <sql id="dynamicWhere">
+        <where>
+            <if test="symbol not in {null, ''}">a.symbol = #{symbol}</if>
+            <if test="exchange not in {null, ''}">AND a.exchange = #{exchange}</if>
+            <if test="sellPrice not in {null, ''}">AND a.sell_price = #{sellPrice}</if>
+            <if test="buyPrice not in {null, ''}">AND a.buy_price = #{buyPrice}</if>
+            <if test="type not in {null, ''}">AND a.type = #{type}</if>
+            <include refid="likeWhere"/>
+        </where>
+    </sql>
+
+    <select id="get" resultType="MonitorSymbol" parameterType="long">
+        SELECT <include refid="columns_join"/>
+        FROM <include refid="tableName"/> a
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="getByDynamicWhere" resultType="MonitorSymbol">
+        SELECT <include refid="columns_join"/>
+        FROM <include refid="tableName"/> a
+        <include refid="dynamicWhere"/>
+    </select>
+
+    <select id="getCount" resultType="int">
+        SELECT COUNT(1)
+        FROM <include refid="tableName"/> a
+        <include refid="dynamicWhere"/>
+    </select>
+
+    <select id="getList" resultType="MonitorSymbol">
+        SELECT <include refid="columns_join"/>
+        FROM <include refid="tableName"/> a
+        <include refid="dynamicWhere"/>
+        <if test="fullordering not in {null, ''}">
+            ORDER BY ${fullordering}
+        </if>
+    </select>
+
+    <insert id="insert" parameterType="MonitorSymbol" useGeneratedKeys="true"
+            keyProperty="id" >
+        INSERT IGNORE INTO <include refid="tableName"/>
+        (<include refid="columns_no_id"/>)
+        VALUES
+        (
+        #{symbol}, #{exchange}, #{sellPrice}, #{buyPrice}, #{type}
+        )
+    </insert>
+
+    <update id="update" parameterType="MonitorSymbol">
+        UPDATE <include refid="tableName"/>
+        <set>
+            <if test="symbol not in {null, ''}">symbol=#{symbol}, </if>
+            <if test="exchange not in {null, ''}">exchange=#{exchange}, </if>
+            <if test="sellPrice not in {null, ''}">sell_price=#{sellPrice}, </if>
+            <if test="buyPrice not in {null, ''}">buy_price=#{buyPrice}, </if>
+            <if test="type not in {null, ''}">type=#{type}, </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        DELETE FROM <include refid="tableName"/> WHERE id = #{id}
+    </delete>
+
+    <delete id="batchDelete">
+        DELETE FROM <include refid="tableName"/>
+        WHERE id IN
+        <foreach item="item" index="index" collection="list"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

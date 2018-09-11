@@ -7,6 +7,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class GsonUtils {
@@ -21,6 +24,17 @@ public class GsonUtils {
     }
 
     /**
+     * 将给定类型的对象转换城json字符串
+     * @param <T> 对象类型
+     * @param obj T 指定类型的对象
+     * @param pretty boolean 是否格式化输出，true-格式化，false-不格式化
+     * @return String json字符串
+     */
+    public static <T> String toJson(T obj, boolean pretty) {
+        return toJson(obj, null, null, pretty);
+    }
+
+    /**
      * 将对象转换成json字符串 使用相应的排除策略
      * @param obj T 源对象
      * @param strategy ExclusionStrategy 排除字段策略
@@ -29,6 +43,19 @@ public class GsonUtils {
      */
     public static <T> String toJson(T obj, ExclusionStrategy strategy) {
         return toJson(obj, strategy, null);
+    }
+
+    /**
+     * 将对象转换成json字符串 使用相应的排除策略
+     * @param obj T 源对象
+     * @param strategy ExclusionStrategy 排除字段策略
+     * @param pretty boolean 是否格式化输出，true-格式化，false-不格式化
+     * @param <T> 目标对象类型
+     * @return String json字符串
+     */
+    public static <T> String toJson(
+            T obj, ExclusionStrategy strategy, boolean pretty) {
+        return toJson(obj, strategy, null, pretty);
     }
 
     /**
@@ -43,7 +70,20 @@ public class GsonUtils {
     }
 
     /**
-     * 将对象转换成json字符串 使用相应的排除策略和字段名策略
+     * 将对象转换成json字符串 使用相应的字段名策略
+     * @param obj T 源对象
+     * @param policy FieldNamingPolicy 字段名转换策略
+     * @param pretty boolean 是否格式化输出，true-格式化，false-不格式化
+     * @param <T> 目标对象类型
+     * @return String json字符串
+     */
+    public static <T> String toJson(
+            T obj, FieldNamingPolicy policy, boolean pretty) {
+        return toJson(obj, null, policy, pretty);
+    }
+
+    /**
+     * 将对象转换成json字符串 使用相应的排除策略和字段名策略，默认格式化输出
      * @param obj T 源对象
      * @param strategy ExclusionStrategy 排除字段策略
      * @param policy FieldNamingPolicy 字段名转换策略
@@ -53,6 +93,21 @@ public class GsonUtils {
     public static <T> String toJson(T obj,
                                     ExclusionStrategy strategy,
                                     FieldNamingPolicy policy) {
+        return toJson(obj, strategy, policy, true);
+    }
+
+    /**
+     * 将对象转换成json字符串 使用相应的排除策略和字段名策略
+     * @param obj T 源对象
+     * @param strategy ExclusionStrategy 排除字段策略
+     * @param policy FieldNamingPolicy 字段名转换策略
+     * @param pretty boolean 是否格式化输出，true-格式化，false-不格式化
+     * @param <T> 目标对象类型
+     * @return String json字符串
+     */
+    public static <T> String toJson(T obj,
+                                    ExclusionStrategy strategy,
+                                    FieldNamingPolicy policy, boolean pretty) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         if (strategy != null) {
             gsonBuilder.setExclusionStrategies(strategy);
@@ -60,13 +115,36 @@ public class GsonUtils {
         if (policy != null) {
             gsonBuilder.setFieldNamingPolicy(policy);
         }
+        if (pretty) {
+            gsonBuilder.setPrettyPrinting();
+        }
         Type type = new TypeToken<T>() {}.getType();
-        return gsonBuilder.setPrettyPrinting().create().toJson(obj, type);
+        return gsonBuilder.create().toJson(obj, type);
     }
 
+    /**
+     * 将对象转换成Json字符串，默认格式化输出
+     * @param obj Object 目标对象
+     * @param type Type 对象类型
+     * @return String json字符串
+     */
     public static String toJson(Object obj, Type type) {
+        return toJson(obj, type, true);
+    }
+
+    /**
+     * 将对象转换成Json字符串
+     * @param obj Object 目标对象
+     * @param type Type 对象类型
+     * @param pretty boolean 是否格式化输出，true-格式化，false-不格式化
+     * @return String json字符串
+     */
+    public static String toJson(Object obj, Type type, boolean pretty) {
         GsonBuilder gsonBuilder = new GsonBuilder();
-        return gsonBuilder.setPrettyPrinting().create().toJson(obj, type);
+        if (pretty) {
+            gsonBuilder.setPrettyPrinting();
+        }
+        return gsonBuilder.create().toJson(obj, type);
     }
 
     /**
@@ -118,7 +196,83 @@ public class GsonUtils {
         return null;
     }
 
-    public static void main(String[] args) {
+    /**
+     * 把json格式字符串转换成Map<String ,Object>对象
+     * @param json json格式字符串
+     * @return Map
+     */
+    public static Map<String, Object> toStrObjMap(String json){
+        Type type = new TypeToken<Map<String ,Object>>() {}.getType();
+        return GsonUtils.fromJson(json, type);
+    }
 
+    /**
+     * 把json格式字符串转换成Map<String ,String>对象
+     * @param json json格式字符串
+     * @return Map
+     */
+    public static Map<String, String> toStrStrMap(String json){
+        Type type = new TypeToken<Map<String ,String>>() {}.getType();
+        return GsonUtils.fromJson(json, type);
+    }
+
+    /**
+     * 把json格式字符串转换成Map<String ,Long>对象
+     * @param json json格式字符串
+     * @return Map
+     */
+    public static Map<String, Long> toStrLongMap(String json){
+        Type type = new TypeToken<Map<String ,Long>>() {}.getType();
+        return GsonUtils.fromJson(json, type);
+    }
+
+    /**
+     * 把json格式字符串转换成Map<String ,Integer>对象
+     * @param json json格式字符串
+     * @return Map
+     */
+    public static Map<String, Integer> toStrIntegerMap(String json){
+        Type type = new TypeToken<Map<String ,Integer>>() {}.getType();
+        return GsonUtils.fromJson(json, type);
+    }
+
+    /**
+     * 把json格式字符串转换成Map<String ,List<Long>>对象
+     * @param json json格式字符串
+     * @return Map
+     */
+    public static Map<String ,List<Long>> toStrLongListMap(String json){
+        Type type = new TypeToken<Map<String ,List<Long>>>() {}.getType();
+        return GsonUtils.fromJson(json, type);
+    }
+
+    /**
+     * 把json格式字符串转换成List<Long>对象
+     * @param json json格式字符串
+     * @return Map
+     */
+    public static List<Long> toLongList(String json){
+        Type type = new TypeToken<List<Long>>() {}.getType();
+        return GsonUtils.fromJson(json, type);
+    }
+
+    public static void main(String[] args) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("a", "aaasdfsf");
+        map.put("b", "sfsdfsdfsdf");
+        String s = "{'a': 1}";
+        System.out.println(GsonUtils.toStrObjMap(s));
+        System.out.println(GsonUtils.toJson(map));
+        System.out.println(GsonUtils.toJson(map, false));
+
+        Gson gson = new Gson();
+        Object[] numbers1 = new Object[]{1, 1.0, 1.23, 9223372036854775807L,
+                1.23E10, 1.23E20};
+        String json = gson.toJson(numbers1);
+        Object[] numbers2 = gson.fromJson(json, Object[].class);
+        for (int i = 0; i < numbers2.length; i++) {
+            System.out.println(numbers1[i] + " (" + numbers1[i].getClass().toString().substring(6)
+                    + ")\t-->\t" + numbers2[i] + " (" + numbers2[i].getClass().toString().substring(6) + ")");
+        }
     }
 }
