@@ -1,4 +1,4 @@
-package com.crazy.dashboard.service;
+package com.crazy.dashboard.service.wechat;
 
 import com.crazy.code.httpclient.HttpClientException;
 import com.crazy.code.httpclient.HttpClientUtils;
@@ -7,6 +7,7 @@ import com.crazy.code.util.GsonUtils;
 import com.crazy.code.util.XmlUtils;
 import com.crazy.dashboard.model.exchange.Depth;
 import com.crazy.dashboard.model.exchange.DepthDetail;
+import com.crazy.dashboard.service.WeatherService;
 import com.crazy.dashboard.service.exchangeApi.ContrastService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

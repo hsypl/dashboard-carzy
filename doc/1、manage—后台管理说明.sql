@@ -93,3 +93,15 @@ CREATE TABLE IF NOT EXISTS user_privilege (
   INDEX(item_type),
   UNIQUE(user_id, item_id, item_type)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin COMMENT '平台用户权限信息表';
+
+
+CREATE TABLE IF NOT EXISTS user_info (
+  uid VARCHAR (64) NOT NULL  COMMENT '用户id',
+  username VARCHAR(128) NOT NULL COMMENT '系统用户名（邮箱）',
+  password VARCHAR(128) NOT NULL COMMENT '登录密码',
+  name VARCHAR(128) NOT NULL COMMENT '姓名',
+  admin INT NOT NULL COMMENT '是否管理员 1是 2否' ,
+  PRIMARY KEY (uid),
+  UNIQUE(username),
+  INDEX(name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin COMMENT '用户信息表';

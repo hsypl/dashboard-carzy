@@ -9,7 +9,7 @@ import com.crazy.dashboard.model.exchange.Depth;
 import com.crazy.dashboard.model.exchange.Ticket;
 import com.crazy.dashboard.service.MobileInfoService;
 import com.crazy.dashboard.service.MonitorRecordService;
-import com.crazy.dashboard.service.WechatService;
+import com.crazy.dashboard.service.wechat.WechatService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

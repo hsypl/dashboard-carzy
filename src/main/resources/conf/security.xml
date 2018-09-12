@@ -11,6 +11,7 @@
 
     <http pattern="/media/**" security="none"/>
     <http pattern="/dashboard/login" security="none"/>
+    <http pattern="/dashboard/wechat/receive" security="none"/>
     <http pattern="/dashboard/loginFailed" security="none"/>
     <http pattern="/dashboard/sessionOut" security="none"/>
     <http pattern="/dashboard/logoutSuccess" security="none"/>

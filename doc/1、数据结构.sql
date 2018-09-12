@@ -12,3 +12,5 @@ CREATE TABLE IF NOT EXISTS twitter_message (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin COMMENT '推特内容';
 
 
+
+
