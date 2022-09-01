@@ -296,7 +296,7 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.9.2.thl</version>
+            <version>1.15.3</version>
         </dependency>
 
         <dependency>
@@ -313,7 +313,7 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.10.2</version>
+            <version>1.15.3</version>
         </dependency>
     </dependencies>
     <build>
